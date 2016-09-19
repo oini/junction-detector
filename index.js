@@ -19,5 +19,5 @@ tileReduce({
   out.features = out.features.concat(data.features);
 })
 .on('end', function() {
-  console.log(JSON.stringify(out).length);
+  console.log(out.features.length);
 });
