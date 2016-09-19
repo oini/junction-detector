@@ -6,7 +6,7 @@ var turf = require('turf');
 var out = turf.featureCollection([]);
 //module.exports = function(opts, mbtilesPath, callback) {
 tileReduce({
-  bbox: [-126.91406249999999,24.766784522874453,-66.533203125,49.49667452747045],
+  bbox: [-122.52193450927734,37.69604601332987,-122.35542297363281,37.80625771945958],
   zoom: 12,
   map: path.join(__dirname, '/map.js'),
   sources: [{
@@ -19,5 +19,5 @@ tileReduce({
   out.features = out.features.concat(data.features);
 })
 .on('end', function() {
-  console.log(JSON.stringify(out));
+  console.log(JSON.stringify(out).length);
 });

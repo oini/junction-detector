@@ -35,8 +35,14 @@ module.exports = function(tileLayers, tile, writeData, done) {
     var val = layer.features[i];
     if (preserveType[val.properties.highway] && (val.geometry.type === 'LineString' || val.geometry.type === 'MultiLineString') && val.properties.layer === undefined) {
       var bboxHighway = turf.bbox(val);
-      bboxHighway.push(val.properties._osm_way_id);
-      bboxes.push(bboxHighway);
+      var eachBboxHighway = {
+        minX: bboxHighway[0],
+        minY: bboxHighway[1],
+        maxX: bboxHighway[2],
+        maxY: bboxHighway[3],
+        osm_way_id: val.properties._osm_way_id
+      };
+      bboxes.push(eachBboxHighway);
       highways[val.properties._osm_way_id] = val;
     }
   }
@@ -50,8 +56,8 @@ module.exports = function(tileLayers, tile, writeData, done) {
     var overlaps = highwaysTree.search(bbox);
     for (var k = 0; k < overlaps.length; k++) {
       var overlap = overlaps[k];
-      if (bbox[4] !== overlap[4]) {
-        var intersectPoint = turf.intersect(highways[overlap[4]], highways[bbox[4]]);
+      if (bbox.osm_way_id !== overlap.osm_way_id) {
+        var intersectPoint = turf.intersect(highways[overlap.osm_way_id], highways[bbox.osm_way_id]);
         if (intersectPoint !== undefined && (intersectPoint.geometry.type === 'Point' || intersectPoint.geometry.type === 'MultiPoint')) {
           output.features = output.features.concat(intersectPoint);
           //output.push(JSON.stringify(intersectPoint) + ',');
@@ -60,8 +66,6 @@ module.exports = function(tileLayers, tile, writeData, done) {
       }
     }
   }
-
-
   done(null, output);
 
 };
