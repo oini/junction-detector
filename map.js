@@ -40,10 +40,10 @@ module.exports = function(tileLayers, tile, writeData, done) {
         minY: bboxHighway[1],
         maxX: bboxHighway[2],
         maxY: bboxHighway[3],
-        osm_way_id: val.properties._osm_way_id
+        osm_way_id: val.properties['@id']
       };
       bboxes.push(eachBboxHighway);
-      highways[val.properties._osm_way_id] = val;
+      highways[val.properties['@id']] = val;
     }
   }
 
