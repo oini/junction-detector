@@ -49,7 +49,7 @@ module.exports = function(tileLayers, tile, writeData, done) {
 
   var highwaysTree = rbush(bboxes.length);
   highwaysTree.load(bboxes);
-  var output = turf.featureCollection([]);
+  var output = [];
 
   for (var j = 0; j < bboxes.length; j++) {
     var bbox = bboxes[j];
@@ -59,9 +59,7 @@ module.exports = function(tileLayers, tile, writeData, done) {
       if (bbox.osm_way_id !== overlap.osm_way_id) {
         var intersectPoint = turf.intersect(highways[overlap.osm_way_id], highways[bbox.osm_way_id]);
         if (intersectPoint !== undefined && (intersectPoint.geometry.type === 'Point' || intersectPoint.geometry.type === 'MultiPoint')) {
-          output.features = output.features.concat(intersectPoint);
-          //output.push(JSON.stringify(intersectPoint) + ',');
-          //console.log(JSON.stringify(intersectPoint) + ',');
+          output.push(intersectPoint.geometry.coordinates);
         }
       }
     }

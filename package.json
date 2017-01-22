@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/oini/junction-detector#readme",
   "dependencies": {
+    "dedupe": "^2.1.0",
     "path": "^0.12.7",
     "rbush": "^2.0.1",
     "tile-reduce": "^3.1.1",

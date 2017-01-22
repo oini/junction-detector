@@ -2,12 +2,12 @@
 var tileReduce = require('tile-reduce');
 var path = require('path');
 var turf = require('turf');
+var dedupe = require('dedupe');
 
-var out = turf.featureCollection([]);
-//module.exports = function(opts, mbtilesPath, callback) {
+var out = [];
+var junctions = [];
 tileReduce({
-  bbox: [-122.52193450927734,37.69604601332987,-122.35542297363281,37.80625771945958],
-  // bbox: [-126.39,21.75,-66.80,49.33],
+  bbox: [-122.445981,37.751151,-122.420482,37.769355],
   zoom: 12,
   map: path.join(__dirname, '/map.js'),
   sources: [{
@@ -17,8 +17,12 @@ tileReduce({
   }]
 })
 .on('reduce', function(data) {
-  out.features = out.features.concat(data.features);
+  out = out.concat(data);
 })
 .on('end', function() {
-  console.log(out.features.length);
+  var dedupe_out = dedupe(out);
+  for (var i = 0; i < dedupe_out.length; i++) {
+    junctions = junctions.concat(turf.point(dedupe_out[i]));
+  }
+  console.log(JSON.stringify(turf.featureCollection(junctions)));
 });
